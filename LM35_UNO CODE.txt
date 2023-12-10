@@ -1,0 +1,35 @@
+
+
+#define LED_PIN 13
+const int lm35_pin = A1; /* LM35 O/P pin */
+unsigned long lastTimeLedBlinked = millis(); 
+byte ledState = LOW; 
+void setup() {
+ pinMode(LED_PIN, OUTPUT); 
+}
+void loop() {
+ int temp_adc_val; 
+ float temp_val;
+temp_adc_val = analogRead(lm35_pin); /* Read Temperature */
+ temp_val = (temp_adc_val * 4.88); /* Convert adc value to equivalent voltage */
+ temp_val = (temp_val/10); 
+ if(temp_val > 30) myDelay(500); 
+ if(temp_val < 30) myDelay(250); 
+}
+void myDelay(unsigned long delayMilliSecond)
+{
+ unsigned long timeNow = millis(); 
+ if (timeNow - lastTimeLedBlinked > delayMilliSecond)
+ {
+ if (ledState == LOW)
+ {
+ ledState = HIGH; 
+ }
+ else
+ {
+ ledState = LOW; 
+ }
+ digitalWrite(LED_PIN, ledState); 
+ lastTimeLedBlinked = timeNow; 
+ }
+}
